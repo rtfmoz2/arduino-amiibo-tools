@@ -46,7 +46,7 @@ void loop() {
   byte size = sizeof(buffer);
 
   Serial.print(F("Card UID: "));
-  printHex(mfrc522.uid.uidByte, mfrc522.uid.size);
+  dump_byte_array(mfrc522.uid.uidByte, mfrc522.uid.size);
   Serial.println();
   Serial.print(F("PICC type: "));
   MFRC522::PICC_Type piccType = mfrc522.PICC_GetType(mfrc522.uid.sak);
@@ -74,21 +74,11 @@ void loop() {
 }
 
 /**
- * Helper routine to dump a byte array as hex values to Serial. 
- */
-void dump_byte_array(byte *buffer, byte bufferSize) {
-  for (byte i = 0; i < bufferSize; i++) {
-    Serial.print(buffer[i] < 0x10 ? "0" : "");
-    Serial.print(buffer[i], HEX);
-  }
-}
-
-/**
    Helper routine to dump a byte array as hex values to Serial.
 */
 void dump_byte_array(byte *buffer, byte bufferSize) {
   for (byte i = 0; i < bufferSize; i++) {
-    Serial.print(buffer[i] < 0x10 ? "0" : "");
+    Serial.print(buffer[i] < 0x10 ? " 0" : " ");
     Serial.print(buffer[i], HEX);
   }
 }
