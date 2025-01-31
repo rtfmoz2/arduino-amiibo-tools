@@ -45,6 +45,14 @@ void loop() {
   byte buffer[18];
   byte size = sizeof(buffer);
 
+  Serial.print(F("Card UID: "));
+  printHex(mfrc522.uid.uidByte, mfrc522.uid.size);
+  Serial.println();
+  Serial.print(F("PICC type: "));
+  MFRC522::PICC_Type piccType = mfrc522.PICC_GetType(mfrc522.uid.sak);
+  Serial.println(mfrc522.PICC_GetTypeName(piccType));
+  Serial.println();
+
   // Read amiibo data
   for (byte page = 0; page < pages; page++) {
     // Dump data into serial
@@ -63,6 +71,16 @@ void loop() {
 
   Serial.println("Dump finished! Now please take your Amiibo card away!");
   delay(30000);
+}
+
+/**
+ * Helper routine to dump a byte array as hex values to Serial. 
+ */
+void dump_byte_array(byte *buffer, byte bufferSize) {
+  for (byte i = 0; i < bufferSize; i++) {
+    Serial.print(buffer[i] < 0x10 ? "0" : "");
+    Serial.print(buffer[i], HEX);
+  }
 }
 
 /**
